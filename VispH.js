@@ -1,7 +1,7 @@
 // import * as THREE from 'three';
 // import {Vector3} from "three";
 // For THREE.js
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@latest/build/three.module.min.js';
+import * as THREE from './supportjs/three.module.min.js';
 
 // For d3.js
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@6/dist/d3.module.min.js';

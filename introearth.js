@@ -4,10 +4,10 @@
 // import * as echarts from 'echarts';
 // import Papa from 'papaparse';
 // For THREE.js
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@latest/build/three.module.min.js';
+import * as THREE from './supportjs/three.module.min.js';
 
 // For d3.js
-import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@6/dist/d3.module.min.js';
+import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7';
 
 // For gsap
 import gsap from 'https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js';
