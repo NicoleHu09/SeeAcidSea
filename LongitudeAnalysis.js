@@ -26,13 +26,60 @@ import * as THREE from 'three'
 
 
 
-import vertexShader from './shader/vertex.glsl'
-import fragmentShader from './shader/fragment.glsl'
 
-import fragmentPngShader from './shader/fragmentpng.glsl'
+const vertexShader = `
+varying vec2 vertexUV;
+varying vec3 vertexNormal;
 
-import atmosphereVertexShader from './shader/atmosphereVertex.glsl'
-import atmosphereFragmentShader from './shader/atmosphereFragment.glsl'
+void main(){
+    vertexUV = uv;
+    vertexNormal = normalize(normalMatrix * normal);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+}
+`;
+
+const fragmentShader = `
+uniform sampler2D globeTexture;
+
+varying vec2 vertexUV;
+varying vec3 vertexNormal;
+
+void main(){
+    float intensity = 1.05 - dot(vertexNormal, vec3(0.0, 0.0,1.0));
+    vec3 atmosphere = vec3(0.3, 0.6, 1.0) * pow(intensity, 1.5);
+    //vec3: change the color of atmosphere
+
+    gl_FragColor = vec4(atmosphere + texture2D(globeTexture,vertexUV).xyz, 1.0);
+}
+`;
+
+const fragmentPngShader = `
+uniform sampler2D globeTexture;
+varying vec2 vertexUV;
+
+void main() {
+    vec4 textureColor = texture2D(globeTexture, vertexUV);
+    gl_FragColor = textureColor;
+}
+`;
+
+const atmosphereVertexShader = `
+varying vec3 vertexNormal;
+
+void main(){
+    vertexNormal = normalize(normalMatrix * normal) ;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+}
+`;
+
+const atmosphereFragmentShader = `
+varying vec3 vertexNormal;
+void main(){
+    float intensity = pow(0.5 - dot(vertexNormal, vec3(0, 0, 1.0)),2.5);
+
+    gl_FragColor = vec4(0.3, 0.6, 1.0, 1.0)*intensity;
+}
+`;
 
 
 
