@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <title>SeeAcidSea</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.0/fullpage.min.js" integrity="sha512-HqbDsHIJoZ36Csd7NMupWFxC7e7aX2qm213sX+hirN+yEx/eUNlZrTWPs1dUQDEW4fMVkerv1PfMohR1WdFFJQ==" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.1.0/fullpage.css" integrity="sha512-hGBKkjAVJUXoImyDezOKpzuY4LS1eTvJ4HTC/pbxn47x5zNzGA1vi3vFQhhOehWLTNHdn+2Yqh/IRNPw/8JF/A==" crossorigin="anonymous" />
+    <style>
+        @font-face {
+            font-family: Lato-Bold;
+            src: url("/assets/Lato-Bold-bf1b8130.ttf");
+        }
+        @font-face {
+            font-family: Lato-Heavy;
+            src: url("/assets/Lato-Heavy-4ce7ec20.ttf");
+        }
+        @font-face {
+            font-family: TradeGothics-Regular;
+            src: url("/assets/Trade Gothic LT-75ced722.ttf");
+        }
+        @font-face {
+            font-family: TradeGothics-Bold;
+            src: url("/assets/Trade Gothic LT Bold-d851713b.ttf");
+        }
+        @font-face {
+            font-family: TradeGothics-Thin;
+            src: url("/assets/Trade Gothic LT Light-50271c32.ttf");
+        }
+        body{
+            font-family: TradeGothics-Regular;
+            background-color: #000000;
+            overflow: hidden;
+        }
+        * {
+            padding: 0;
+            margin: 0px;
+            font-family: 'Josefin Sans', sans-serif;
+        }
+        h1 {
+            color: #fff;
+            text-align: center;
+            font-size: 10vw;
+        }
+        div#fp-nav a span {
+            background: #fff !important;
+        }
+        #coral-canvas,#algae-canvas,#fish-canvas{
+            margin-left: -50px;
+        }
+        .pagetitle-container{
+            position: absolute;
+            bottom: 50px;
+            left: 100px;
+            width: 60%;
+            height: 40%;
+        }
+        .pagetitle{
+            font-family: TradeGothics-Bold;
+            font-size:70px;
+            color: white;
+            margin-bottom: 30px;
+        }
+        .page-intro{
+            font-family: TradeGothics-Regular;
+            font-size:20px;
+            color: white;
+        }
+        .p2-container{
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            top: 50%;
+            width: 70%;
+            height: 40%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .p2-title{
+            font-family: TradeGothics-Bold;
+            font-size:60px;
+            color: white;
+            margin-bottom: 30px;
+        }
+        .p2-text{
+            font-family: TradeGothics-Regular;
+            font-size:30px;
+            color: white;
+        }
+
+        .pHSlider{
+            width: 60%;
+            height: 50px;
+            margin-top: 40px;
+        }
+        .range-slider {
+            position: relative; /* 设置为relative以便我们可以相对于它定位子元素 */
+        }
+
+        .slider-label {
+            position: absolute;
+            color: white;
+            margin-top: 25px;
+            font-family: TradeGothics-Regular;
+            transform: translate(-50%, -100%); /* 这会使其居中并在滑块上方显示 */
+        }
+        .rs-range {
+            width: 100%;
+            -webkit-appearance: none;
+            border-radius: 5px;
+            border: 0px solid #010101;
+        }
+
+        .rs-range:focus {
+            outline: none;
+            border-radius: 5px;
+            border: 0px solid #010101;
+        }
+
+        .rs-range::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: none;
+            background: linear-gradient(to right, rgba(206, 20, 26,1),#191A1D);
+            border: 0px solid #010101;
+        }
+
+        .rs-range::-moz-range-track {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: none;
+            background: linear-gradient(to right, rgba(206, 20, 26,1),#191A1D);
+            border: 0px solid #010101;
+        }
+
+        .rs-range::-webkit-slider-thumb {
+            border: 0px solid #ffffff;
+            height: 25px;
+            width: 25px;
+            border-radius: 25px;
+            background: white;
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -7.5px;
+        }
+        .pHSlider-years-1{
+            width: 40%;
+            display: flex;
+            justify-content: space-between;
+        }
+        .pHSlider-years-2{
+            width: 40%;
+            display: flex;
+            justify-content: space-between;
+        }
+        .p3-container{
+            position: absolute;
+            left: 100px;
+            top: 50px;
+            width: 80%;
+            height: 35%;
+        }
+        .p3-title{
+            font-family: TradeGothics-Bold;
+            font-size:60px;
+            color: white;
+            margin-bottom: 20px;
+        }
+        .p3-text{
+            font-family: TradeGothics-Regular;
+            font-size:20px;
+            color: white;
+            margin-top: 10px;
+        }
+        .p3-part2{
+            position: absolute;
+            width: 100%;
+            height: 400px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        .creature-container{
+            width: 26%;
+            height: 470px;
+            margin-right: 60px;
+        }
+        #coral-canvas{
+            width: 300px;
+            height: 300px;
+        }
+        .creature-text{
+            margin-top: 30px;
+            color: #CCCCCC;
+        }
+        .globe{
+            position: absolute;
+            bottom: 0;
+        }
+        .p4-container{
+            width: 100%;
+            height: 50%;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+        .start-btn{
+            z-index: 1002;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            top: 400px;
+            width: 300px;
+            height: 50px;
+            border-radius: 30px;
+            border: 1px solid #ffffff;
+            color: white;
+            font-family: TradeGothics-Regular;
+            font-size: 20px;
+            margin-top: 50px;
+            background-color: rgba(255,255,255,0.3);
+            text-decoration: none;
+        }
+        .start-btn:hover{
+            cursor: pointer;
+            background-color: white;
+            color: black;
+            transition: .5s ease-in-out;
+        }
+        .animate__animated.animate__fadeIn {
+            --animate-duration: 3s;
+        }
+        .lines{
+            width: 60%;
+            height: 20px;
+            display: flex;
+            flex-direction: row;
+        }
+        #scrollContainer {
+            height: 1500px;
+        }
+        .page-title-container{
+            position: absolute;
+            z-index: 10000;
+            color: white;
+            font-size: 80px;
+            top: 150px;
+            left: 335px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.1/dist/echarts.min.js"></script>
+  <script type="module" crossorigin src="/assets/index-10cea08b.js"></script>
+</head>
+<body>
+
+
+
+
+<div id="fullpage">
+    <div class="vertical-scrolling">
+        <canvas id="myCanvasOA" ></canvas>
+        <div class="pagetitle-container">
+            <div class="pagetitle animate__animated animate__fadeIn">See Acid Sea</div>
+            <div class="page-intro animate__animated animate__fadeIn">Ocean acidification is fundamentally changing the chemistry of the world's oceans and threatening our marine resources. This website takes you through and explores the phenomenon of ocean acidification and the data associated with it.</div>
+        </div>
+    </div>
+    <div class="vertical-scrolling">
+        <div class="p2-container">
+            <div class="p2-title ">What is Ocean Acidification?</div>
+            <div class="p2-text">Ocean acidification is the process where increased levels of <span style="color: #4C9EED">carbon dioxide </span>in the atmosphere lead to a decrease in the <span style="color: #F2A45F"> ocean's pH </span>, making it more acidic, and this can <span style="color: #C09A6C">have harmful effects on marine life</span>, particularly organisms that rely on calcium carbonate for their shells and skeletons.</div>
+        </div>
+    </div>
+    <div class="vertical-scrolling">
+        <div class="p3-container">
+            <div class="p3-title">What is pH?</div>
+            <div class="p3-text">pH actually relates to the concentration of hydrogen ions (H+) in a solution. Imagine it as a ruler numbered from 0 to 14.</div>
+            <div class="p3-text">The more hydrogen ions there are, the more acidity there is and the lower the pH value.</div>
+            <div class="p3-text">Ocean acidity has declined by 0.1 in more than 200 years since the beginning of the Industrial Revolution and is projected to decline to 7.9 per cent by 2100.</div>
+            <div class="p3-text" style="margin-top: 20px;font-size: 18px;color: #BBBBBB">Drag the slider to see the relationship between pH and hydrogen ions.</div>
+
+            <div class="pHSlider-container">
+                <div class="pHSlider">
+                        <div class="range-slider">
+                            <input id="pHSlider" class="rs-range" type="range" min="7.9" max="8.2" value="8.1" step="0.05">
+                            <div class="slider-label">8.1</div>
+                        </div>
+                </div>
+                <div class="lines">
+                    <div style="border-left: 1px solid white;border-right: 1px solid white;width: 66%;height: 10px;margin-left: 10px"></div>
+                    <div style="border-right: 1px solid white;width: 34%;height: 10px;margin-left: 10px"></div>
+                </div>
+                <div class="lines">
+                    <p style="margin-top: 5px;color: white;font-family: TradeGothics-Regular">2100</p>
+                    <p style="margin-top: 5px;color: white;font-family: TradeGothics-Regular;margin-left: 58%">2023</p>
+                    <p style="margin-top: 5px;color: white;font-family: TradeGothics-Regular;margin-left: 29%">1840</p>
+                </div>
+            </div>
+
+        </div>
+        <canvas id="mySecCanvas" style="width: 100%; height: 100%;position: absolute;bottom: 0"></canvas>
+    </div>
+    <div class="vertical-scrolling">
+        <div class="p3-container">
+            <div class="p3-title">Why it becomes a problem?</div>
+            <div class="p3-text">Ocean acidification creates conditions that erode the minerals used by oysters, clams, lobsters, shrimp, coral reefs, and other marine organisms to build their shells and skeletons.</div>
+            <div class="p3-text">Ocean acidification leads to changes in marine life, affecting the development of the fishing and tourism industries, and can even jeopardize human health.</div>
+        </div>
+        <div class="p3-part2">
+            <div class="creature-container">
+                <h4 style="color: white">CORAL</h4>
+                <canvas id="coral-canvas" ></canvas>
+                <div class="creature-text">The impact will be especially strong in the Indo-Pacific region, with up to <span style="font-family: TradeGothics-Bold;color: #87CFFB">20%</span> reductions in the densities of coral skeletons <span style="font-family: TradeGothics-Bold;color: #87CFFB">by 2100</span> in parts of the Coral Triangle—the area</div>
+            </div>
+            <div class="creature-container">
+                <h4 style="color: white">ALGAE</h4>
+                <canvas id="algae-canvas" ></canvas>
+                <div class="creature-text">In the laboratory, many harmful algae produce <span style="font-family: TradeGothics-Bold;color: #87CFFB">more toxins and reproduce faster</span> in acidified water. In the wild, similar reactions could harm people who consume contaminated shellfish, sick fish, and marine mammals.</div>
+            </div>
+            <div class="creature-container">
+                <h4 style="color: white">FISH</h4>
+                <canvas id="fish-canvas" ></canvas>
+                <div class="creature-text">Approximately <span style="font-family: TradeGothics-Bold;color: #87CFFB">20%</span> of the world's population derives at least one-fifth of their animal protein intake from fish. Ocean acidification leads to an <span style="font-family: TradeGothics-Bold;color: #87CFFB">increased mortality rate</span> of fish embryos.</div>
+            </div>
+        </div>
+
+    </div>
+    <div class="vertical-scrolling">
+        <div style="position: absolute;left:0; top: 0;width: 100%;height: 100%;background-color: rgba(0,0,0,0.7);z-index: 100"></div>
+        <canvas class="globe" id="earth-container"></canvas>
+        <div class="p4-container">
+            <div  style="z-index: 1001;font-family: TradeGothics-Bold;
+            font-size:60px;
+            color: white;
+            margin-bottom: 20px;">Know more about Ocean Acidification?</div>
+            <div style="z-index: 1002;font-family: TradeGothics-Regular;
+            font-size:25px;
+            color: white;
+            margin-bottom: 20px;
+            width: 50%;
+            top: 80px;
+text-align: center">Learn how ocean acidity is changing in all parts of the globe over the decade 2011-2020,<br> and whether there are any patterns of change</div>
+            <a href="mainPage.html" class="start-btn">Start Exploring</a>
+        </div>
+    </div>
+</div>
+<!--<canvas class="globe" id="earth-container"></canvas>-->
+<div id="app"></div>
+
+<div class="left-container">
+    <div class="main-explanation">
+    </div>
+    <div class="gradient-bar-title">pH bar</div>
+    <div class="gradient-bar">
+    </div>
+</div>
+<div class="right-container">
+    <div class="main-explanation-r">
+        <div class="div1 yearDisplay" id="yearDisplay"></div>
+        <div class="div2">
+            <div class="explain2-title">CO2 emissions in this year</div>
+            <div ><span class="explain2-num" id="co2Display"></span><span style="explain2-title">  kiloton</span></div>
+        </div>
+        <div class="div3">
+            <div class="explain3-title" >Percentage of ocean acidity anomalies</div>
+            <div class="explain3-num" id="pctDisplay"></div>
+        </div>
+        <div class="div4">
+            <div class="explain4-title">Average pH</div>
+            <div class="explain4-num"></div>
+        </div>
+        <div class="div5">
+
+        </div>
+    </div>
+</div>
+
+<button class="reset-button" id="reset-button">Reset</button>
+
+<div class="container" id="yearslider-container">
+    <div class="range-slider">
+        <input id="yearSlider" class="rs-range" type="range" min="2011" max="2020" value="2011">
+    </div>
+</div>
+
+<div  class="yearDisplay"></div>
+<div class="info-container" id="info-container">
+
+</div>
+
+
+<div id="tooltip" style="display: none; position: absolute; pointer-events: none;"></div>
+<div id="onscreen-tooltip" style="display: none; position: absolute; pointer-events: none;"></div>
+<!--<script type="module" src="/main.js"></script>-->
+
+<!--<script src="visOA.js" type="module"></script>-->
+
+<script>
+    new fullpage("#fullpage", {
+        sectionSelector: '.vertical-scrolling',
+        navigation: true,
+        parallax: true,
+    });
+</script>
+
+
+
+
+
+
+</body>
+</html>
