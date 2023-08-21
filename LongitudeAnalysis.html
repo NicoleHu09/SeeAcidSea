@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <link rel="icon" type="image/svg+xml" href="/vite.svg"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.0/chroma.min.js"></script>
+  <title>SeeAcidSea</title>
+  <style>
+    @font-face {
+      font-family: Lato-Bold;
+      src: url("./assets/Lato-Bold.ttf");
+    }
+    @font-face {
+      font-family: Lato-Heavy;
+      src: url("./assets/Lato-Heavy.ttf");
+    }
+    @font-face {
+      font-family: TradeGothics-Regular;
+      src: url("./assets/Trade Gothic LT.ttf");
+    }
+    @font-face {
+      font-family: TradeGothics-Bold;
+      src: url("./assets/Trade Gothic LT Bold.ttf");
+    }
+    @font-face {
+      font-family: TradeGothics-Thin;
+      src: url("./assets/Trade Gothic LT Light.ttf");
+    }
+    body{
+      font-family: TradeGothics-Regular;
+      background-color: #000000;
+      overflow: hidden;
+    }
+    #myCanvas{
+      padding: 0px;
+      position: fixed;
+      top: 80px;
+      left: -90px;
+    }
+
+    .globe {
+      /*cursor: pointer;*/
+    }
+
+    .reset-button {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    #yearSlider {
+      position: absolute;
+      width: 300px;
+      transform: translateX(-50%);
+    }
+
+    #yearDisplay {
+      position: fixed;
+      left: 100px;
+      bottom: 340px;
+      font-family: BelfastGrotesk-BoldOblique;
+      color: white;
+      font-size: 20px;
+    }
+
+    .container {
+      position: absolute;
+      top: 500px;
+      left: 22%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+
+    .rs-range {
+      width: 800px;
+      -webkit-appearance: none;
+    }
+
+    .rs-range:focus {
+      outline: none;
+    }
+
+    .rs-range::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 2px;
+      cursor: pointer;
+      box-shadow: none;
+      background: #ffffff;
+      border-radius: 0px;
+      border: 0px solid #010101;
+    }
+
+    .rs-range::-moz-range-track {
+      width: 100%;
+      height: 1px;
+      cursor: pointer;
+      box-shadow: none;
+      background: #ffffff;
+      border-radius: 0px;
+      border: 0px solid #010101;
+    }
+
+    .rs-range::-webkit-slider-thumb {
+      box-shadow: none;
+      border: 0px solid #ffffff;
+      box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
+      height: 15px;
+      width: 15px;
+      border-radius: 25px;
+      background: white;
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -7.5px;
+    }
+
+    #earth-container.move {
+      transform: translateX(-25%);
+      transition: 1s;
+    }
+
+    #chart-container {
+      opacity: 0;
+      transition: opacity 1s;
+    }
+
+    #chart-container.show {
+      opacity: 1;
+    }
+    #yearslider-container.move{
+
+    }
+
+
+    .nav-container{
+      position: fixed;
+      top: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: row;
+    }
+    .nav-global{
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
+      height: 100%;
+      width: 140px;
+      margin-right:80px ;
+    }
+    .nav-title{
+      width: 100%;
+      padding-bottom: 5px;
+      font-size: 13px;
+      font-family: TradeGothics-Thin;
+      border-bottom: 0.5px dashed white;
+      color: #CCCCCC;
+    }
+    .nav-item{
+      font-family: TradeGothics-Bold;
+      color: white;
+      margin-top: 5px;
+      text-decoration: none;
+    }
+    .nav-item:hover{
+      cursor: pointer;
+      color: #87CFFB;
+      transition: 0.2s ease-in-out;
+    }
+    .nav-focus-container{
+      display: flex;
+      flex-direction: row;
+    }
+    .nav-focus{
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
+      height: 100%;
+      width: 400px;
+    }
+    .map1-container{
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+      /*align-items: center;*/
+      justify-content: center;
+      padding-left: 20px;
+      right: 60px;
+      top: 110px;
+      width: 60vw;
+      height: 45vh;
+      background-color: #292D31;
+      border: 1px dashed  #56585C;
+      border-radius: 10px;
+      padding-top: 5px;
+    }
+    .map2-container{
+      position: absolute;
+      padding-left: 20px;
+      top: 540px;
+      width: 60vw;
+      height: 33vh;
+      right: 60px;
+      background-color: #292D31;
+      border: 1px dashed  #56585C;
+      border-radius: 10px;
+    }
+    .summary-container{
+      position: absolute;
+      padding-left: 20px;
+      padding-right: 10px;
+      top: 540px;
+      width: 27vw;
+      height: 33vh;
+      left: 60px;
+      background-color: #292D31;
+      border: 1px dashed  #56585C;
+      border-radius: 10px;
+    }
+    .chartLat{
+      top: -40px;
+      width: 100%;
+      height: 100%;
+    }
+    .chartEveryLat{
+      top: -40px;
+      width: 100%;
+      height: 100%;
+    }
+    .axis line{
+      stroke: #dfdfdf;
+      stroke-width: 0.5;
+      shape-rendering: crispEdges;
+    }
+
+
+    /* axis contour */
+    .axis g {
+      stroke: #dfdfdf;
+      stroke-width: 0.7;
+      shape-rendering: crispEdges;
+    }
+
+    /* axis text */
+    .axis text {
+      fill: #ffffff;
+      font-family: Georgia;
+      font-size: 100%;
+    }
+    .chart-title{
+      font-family: TradeGothics-Bold;
+      margin: 10px;
+      color: white;
+
+      font-family: TradeGothics-Bold;
+    }
+    #linechart {
+      width: 105%;
+      height: 100%;
+    }
+
+    .btn-container{
+      position: absolute;
+      left: 50px;
+      top: 90px;
+      font-size: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+    .read-btn{
+      margin-right: 20px;
+      color: white;
+      cursor: pointer;
+      width: 80px;
+      height: 28px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid white;
+      font-size: 12px;
+      margin-bottom: 15px;
+    }
+    .read-btn:hover{
+      cursor: pointer;
+      background-color: white;
+      border-radius: 5px;
+      color: black;
+      transition: 0.2s ease-in-out;
+    }
+
+    .reason-btn{
+      margin-bottom: 20px;
+      color: white;
+      cursor: pointer;
+      width: 110px;
+      height: 28px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid white;
+      font-size: 12px;
+    }
+    .reason-btn:hover{
+      margin-bottom: 5px;
+      cursor: pointer;
+      background-color: white;
+      border-radius: 5px;
+      color: black;
+
+      transition: 0.2s ease-in-out;
+    }
+
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.1/dist/echarts.min.js"></script>
+  <script src="https://d3js.org/d3.v4.js"></script>
+</head>
+<body>
+<div class="globe" id="myCanvas"></div>
+<div id="app"></div>
+
+<nav class="nav-container">
+  <div class="nav-global" >
+    <div class="nav-title">OVERVIEW</div>
+    <a href="mainPage.html" class="nav-item">Global view</a>
+  </div>
+  <div class="nav-focus">
+    <div class="nav-title">FOCUS</div>
+    <div class="nav-focus-container">
+      <a href="LongitudeAnalysis.html" class="nav-item" style="margin-right: 70px;text-decoration: none">Location & Latitude</a>
+      <a href="Seasonal.html" class="nav-item" style="margin-right: 70px;text-decoration: none">Seasonal Pattern</a>
+    </div>
+  </div>
+</nav>
+
+<!--<div class="btn-container">-->
+<!--  <div class="read-btn" id="read-btn">Instructions</div>-->
+<!--  <div class="reason-btn" id="reason-btn">About the reason</div>-->
+<!--</div>-->
+
+<div class="map1-container">
+  <h4 class="chart-title">Heatmap for latitude and time</h4>
+  <div id="heatmap"></div>
+<!--  <div id="myChartEveryLat" class="chartEveryLat" ></div>-->
+</div>
+<!--<div class="map2-container">-->
+<!--  <div id="myChartLat" class="chartLat" ></div>-->
+<!--</div>-->
+
+<div class="container" id="yearslider-container">
+  <div class="range-slider">
+    <input id="yearSlider" class="rs-range" type="range" min="2011" max="2020" value="2011">
+  </div>
+</div>
+
+<div class="summary-container">
+  <h4 style="color: white;font-family: TradeGothics-Bold">Instruction</h4>
+  <p style="color: white;font-family: TradeGothics-Regular;font-size: 14px">These two graphs respectively reflect the relationship of pH over time at different latitudes on Earth and the average pH values of the major oceans over time.</p>
+
+  <h4 style="color: white;font-family: TradeGothics-Bold">You may notice that...</h4>
+  <p style="color: white;font-family: TradeGothics-Regular;font-size: 14px">The acidity of seawater near the equator has always been higher.</p>
+  <p style="color: white;font-family: TradeGothics-Regular;font-size: 14px">Near the Earth's poles, the seawater around Antarctica seems to have experienced more severe acidification than the Arctic Ocean.</p>
+
+</div>
+<div class="map2-container"  >
+  <div class="chart-title" style="margin-left: 20px">Line chart for oceans</div>
+  <div id="linechart" style="margin-left: -50px"></div>
+
+</div>
+
+
+<div id="yearDisplay" class="yearDisplay"></div>
+<script type="module" src="/LongitudeAnalysis.js"></script>
+
+<script>
+
+  // set the dimensions and margins of the graph
+  var margin = {top: 0, right: 30, bottom: 30, left: 30},
+          width = 850 - margin.left - margin.right,
+          height = 320 - margin.top - margin.bottom;
+
+  // append the svg object to the body of the page
+  var svg = d3.select("#heatmap")
+          .append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  // Read the data
+  d3.csv("./dataset/all_years_latitude_data_cleaned.csv", function(data) {
+
+    // Transform the data
+    data.forEach(function(d) {
+      d.year_time = d.year + '-' + Math.floor(d.time);
+    });
+
+    // Labels of row and columns
+    var myGroups = data.map(d => d.year_time).filter((v, i, a) => a.indexOf(v) === i); // Year-Time
+    var myVars = data.map(d => d.latitude_bin).filter((v, i, a) => a.indexOf(v) === i); // Latitude
+
+
+    // Build X scales and axis:
+    var x = d3.scaleBand()
+            .range([ 0, width ])
+            .domain(myGroups)
+            .padding(0.01);
+    svg.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x).tickValues(x.domain().filter(function(d, i) { return i % 12 === 0; })))
+            .selectAll("text")
+            .attr("stroke", "#fefefe") // 设置Y轴线和刻度线颜色
+            .attr("fill", "#fefefe") // 设置X轴文字颜色
+            .filter(function(d, i) { return i % 10 === 0; }) // 每隔n个标签显示一个
+            .style("display", null); // 显示选定的标签
+
+    // Build Y scales and axis:
+    var y = d3.scaleBand()
+            .range([ height, 0 ])
+            .domain(myVars)
+            .padding(0.01);
+    svg.append("g")
+            .call(d3.axisLeft(y))
+            .attr("stroke", "#fefefe") // 设置Y轴线和刻度线颜色
+            .selectAll("text")
+            .attr("fill", "#fefefe"); // 设置Y轴文字颜色
+
+    // Build color scale
+// 定义颜色比例尺
+    var colorScale = chroma.scale(['red', 'white','#F9D6A5', '#4C9EED']).domain([8.0, 8.17]);
+
+// 使用比例尺
+    var colorForValue = colorScale(8.1); // 返回 '#ffffff'（白色）
+
+    // Create a tooltip
+    var tooltip = d3.select("#heatmap")
+            .append("div")
+            .style("opacity", 0)
+            .attr("class", "tooltip")
+            .style("background-color", "white")
+            .style("border", "solid")
+            .style("border-width", "1px")
+            .style("border-radius", "2px")
+            .style("padding", "1px");
+
+    // Functions for tooltip
+    var mouseover = function(d) { tooltip.style("opacity", 1); }
+    var mousemove = function(d) {
+      tooltip
+              .html("The pH of this cell is: " + d.pH)
+              .style("left", (d3.mouse(this)[0]) + "px")
+              .style("top", (d3.mouse(this)[1]) + "px")
+              .style("margin-left", "10px")
+              .style("background-color","#292D31")
+              .style("border","none")
+              .style("color","white");
+    }
+    var mouseleave = function(d) { tooltip.style("opacity", 0); }
+
+    // Add the squares
+    svg.selectAll()
+            .data(data, function(d) { return d.year_time + ':' + d.latitude_bin; })
+            .enter()
+            .append("rect")
+            .attr("x", function(d) { return x(d.year_time) })
+            .attr("y", function(d) { return y(d.latitude_bin) })
+            .attr("width", x.bandwidth())
+            .attr("height", y.bandwidth())
+            .attr('fill', function(d) { return colorScale(d.pH); })
+            .on("mouseover", mouseover)
+            .on("mousemove", mousemove)
+            .on("mouseleave", mouseleave);
+  });
+
+
+
+
+  var chartDom = document.getElementById('linechart');
+  var myChart = echarts.init(chartDom);
+
+  d3.csv("./dataset/avg_pH_by_ocean.csv", function(error, data){
+  var oceans = Array.from(new Set(data.map(d => d.ocean)));
+
+    var series = oceans.map(ocean => {
+      return {
+        name: ocean,
+        type: 'line',
+        color: getOceanColor(ocean),
+        symbolSize: 1,       // 设置点的大小
+        data: data.filter(d => d.ocean === ocean).map(d => {
+          return {
+            name: d.year + '-' + Math.round(d.month),
+            value: +d.pH
+          };
+        })
+      };
+    });
+
+    function getOceanColor(ocean) {
+      switch (ocean) {
+        case 'Mediterranean Region':
+          return '#FF6161';
+        case 'Arctic Ocean':
+          return '#79ACDA';
+        case 'South China and Easter Archipelagic Seas':
+          return '#FADDB3';
+        default:
+          return '#d3d3d3';
+      }
+    }
+
+
+
+
+
+
+
+    var option = {
+      tooltip: {
+        trigger: 'axis'
+      },
+      legend: {
+        data: oceans,
+        itemWidth: 10,
+        textStyle: {
+          color: 'grey'
+        },
+        selected: {
+          // 除了第一个ocean之外，其他的默认都是不显示的
+          ...oceans.reduce((acc, curr, idx) => {
+            acc[curr] = idx === 0;
+            return acc;
+          }, {})
+        },
+        inactiveColor: 'rgba(200,200,200,0.2)'
+      },
+      xAxis: {
+        type: 'category',
+        data: data.map(d => d.year + '-' + Math.round(d.month)).filter((v, i, a) => a.indexOf(v) === i), // 删除重复的日期
+        axisLine: {
+          lineStyle: {
+            color: 'rgba(200, 200, 200, 0.2)'  // 这里是x轴线的颜色
+          }
+        },
+      },
+      yAxis: {
+        type: 'value',
+        max:'8.2',
+        min:'7.9',
+        splitLine: {
+          show: true, // 确保显示分割线
+          lineStyle: {
+            color: 'rgba(200, 200, 200, 0.2)'  // 这里是y轴的网格线颜色
+          }
+        }
+      },
+      series: series,
+
+    };
+
+    myChart.setOption(option);
+  });
+
+
+
+</script>
+
+</body>
+</html>
