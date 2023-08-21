@@ -1,12 +1,12 @@
-// import * as THREE from 'three'
-// import * as d3 from 'd3';
-// import gsap from 'gsap'
-// import * as echarts from 'echarts';
-// import Papa from 'papaparse';
-// import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-// import { TWEEN } from 'https://unpkg.com/three@0.139.0/examples/jsm/libs/tween.module.min.js';
-// For THREE.js
-import * as THREE from './supportjs/three.module.min.js';
+import * as THREE from 'three'
+import * as d3 from 'd3';
+import gsap from 'gsap'
+import * as echarts from 'echarts';
+import Papa from 'papaparse';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import { TWEEN } from 'https://unpkg.com/three@0.139.0/examples/jsm/libs/tween.module.min.js';
+// // For THREE.js
+// import * as THREE from './supportjs/three.module.min.js';
 
 // For d3.js
 import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@6/dist/d3.module.min.js';
