@@ -1,6 +1,27 @@
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+// import * as THREE from 'three';
+// import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+// import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+// For THREE.js
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@latest/build/three.module.min.js';
+
+// For d3.js
+import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@6/dist/d3.module.min.js';
+
+// For gsap
+import gsap from 'https://cdn.jsdelivr.net/npm/gsap@3/dist/gsap.min.js';
+
+// For echarts
+import * as echarts from 'https://cdn.jsdelivr.net/npm/echarts@latest/dist/echarts.min.js';
+
+// For PapaParse
+import Papa from 'https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js';
+
+// For OBJLoader (part of three.js)
+import { OBJLoader } from 'https://threejs.org/examples/jsm/loaders/OBJLoader.js';
+
+// For Vector3 (part of three.js)
+import { Vector3 } from 'https://cdn.jsdelivr.net/npm/three@latest/build/three.module.min.js';
+
 
 let scene, camera, renderer;
 let curve;
