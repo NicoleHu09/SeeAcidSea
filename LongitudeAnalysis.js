@@ -1,8 +1,8 @@
 import * as THREE from 'three'
-// import * as d3 from 'd3';
-// import gsap from 'gsap'
-// import * as echarts from 'echarts';
-// import Papa from 'papaparse';
+import * as d3 from 'd3';
+import gsap from 'gsap'
+import * as echarts from 'echarts';
+import Papa from 'papaparse';
 // // For THREE.js
 // import * as THREE from 'https://cdn.jsdelivr.net/npm/three@latest/build/three.module.min.js';
 //

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <link rel="icon" type="image/svg+xml" href="/SeeAcidSea/vite.svg"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <title>SeeAcidSea</title>
+  <style>
+    @font-face {
+      font-family: Lato-Bold;
+      src: url("/SeeAcidSea/assets/Lato-Bold-bf1b8130.ttf");
+    }
+    @font-face {
+      font-family: Lato-Heavy;
+      src: url("/SeeAcidSea/assets/Lato-Heavy-4ce7ec20.ttf");
+    }
+    @font-face {
+      font-family: TradeGothics-Regular;
+      src: url("/SeeAcidSea/assets/Trade Gothic LT-75ced722.ttf");
+    }
+    @font-face {
+      font-family: TradeGothics-Bold;
+      src: url("/SeeAcidSea/assets/Trade Gothic LT Bold-d851713b.ttf");
+    }
+    @font-face {
+      font-family: TradeGothics-Thin;
+      src: url("/SeeAcidSea/assets/Trade Gothic LT Light-50271c32.ttf");
+    }
+    body{
+      font-family: TradeGothics-Regular;
+      background-color: #000000;
+      overflow: hidden;
+    }
+    .navbar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background-color: transparent;
+      height: 10vh;
+    }
+
+    .globe {
+      /*cursor: pointer;*/
+    }
+
+    .reset-button {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    #yearSlider {
+      position: absolute;
+      bottom: 30px;
+      width: 600px;
+      transform: translateX(-50%);
+    }
+
+    #yearDisplay {
+      left: 50px;
+      /*bottom: 30px;*/
+      font-family: BelfastGrotesk-BoldOblique;
+      color: white;
+      font-size: 40px;
+      margin-top: -10px;
+    }
+
+    .container {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      z-index: 1000;
+    }
+
+
+    .rs-range {
+      width: 800px;
+      -webkit-appearance: none;
+    }
+
+    .rs-range:focus {
+      outline: none;
+    }
+
+    .rs-range::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 2px;
+      cursor: pointer;
+      box-shadow: none;
+      background: #ffffff;
+      border-radius: 0px;
+      border: 0px solid #010101;
+    }
+
+    .rs-range::-moz-range-track {
+      width: 100%;
+      height: 1px;
+      cursor: pointer;
+      box-shadow: none;
+      background: #ffffff;
+      border-radius: 0px;
+      border: 0px solid #010101;
+    }
+
+    .rs-range::-webkit-slider-thumb {
+      box-shadow: none;
+      border: 0px solid #ffffff;
+      box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
+      height: 25px;
+      width: 25px;
+      border-radius: 25px;
+      background: white;
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -12.5px;
+    }
+
+
+    /*@keyframes slide-in-from-right {*/
+    /*    0% {*/
+    /*        transform: translateX(100%);*/
+    /*    }*/
+    /*    100% {*/
+    /*        transform: translateX(0);*/
+    /*    }*/
+    /*}*/
+
+
+    .div1 {
+      grid-area: 1 / 1 / 2 / 2;
+      border-bottom: 1px dashed  #56585C;
+      padding-top: 5px;
+      height: 55px;
+    }
+
+    .div2 {
+      display: inline-block;
+      color: white;
+      margin-top: 5px;
+      word-wrap: break-word;
+      border-bottom: 1px dashed  #56585C;
+      width: 100%;
+      /*grid-area: 2 / 1 / 3 / 2;*/
+    }
+
+    .div3 {
+      grid-area: 3 / 1 / 4 / 2;
+      border-bottom: 1px dashed  #56585C;
+    }
+
+    .div4 {
+      grid-area: 5 / 1 / 6 / 2;
+      /*border-right: 1px solid white;*/
+      padding-top: 10px;
+      color: white;
+    }
+
+    .div5 {
+      grid-area: 4 / 2 / 5 / 3;
+      border-bottom: 1px dashed  #56585C;
+    }
+
+    .explain2-title {
+      margin-bottom: 5px;
+      color: white;
+    }
+
+    .explain2-num {
+      margin-top: 5px;
+      margin-bottom: 5px;
+      color: #4C9EED;
+      font-size: 20px;
+      font-family: BelfastGrotesk-BoldOblique;
+    }
+
+    .explain3-title {
+      margin-top: 10px;
+      margin-bottom: 20px;
+      color: white;
+      margin-right: 10px;
+      line-height: 22px;
+    }
+    .explain3-num {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      color: #F9D6A5;
+      font-size: 30px;
+      font-family: BelfastGrotesk-BoldOblique;
+    }
+
+    .explain4-title {
+      margin-top: 10px;
+      margin-bottom: 20px;
+      color: white;
+      margin-left: 10px;
+    }
+    svg:root {
+      width: 50%;
+      height: 50%;
+    }
+    .sub-icon{
+      border: none;
+      width:40px;
+      transform: scale(150%);
+      position: absolute;
+    }
+    .sub-icon:hover{
+      cursor: pointer;
+    }
+    .info-container.hide{
+      opacity: 0;
+    }
+    .svg-container.hide{
+      opacity: 0;
+    }
+    .yearDisplay.hide{
+      opacity: 0;
+    }
+    .longitude-title{
+      position: absolute;
+      top: 70px;
+      left: 40px;
+      width: 800px;
+      height: 100px;
+      font-family: Lato-Bold;
+      font-size: 30px;
+      opacity: 0;
+      color: white;
+    }
+    .longitude-title.show{
+      opacity: 1;
+    }
+    .nav-container{
+      position: fixed;
+      top: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: row;
+    }
+    .nav-global{
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
+      height: 100%;
+      width: 140px;
+      margin-right:80px ;
+    }
+    .nav-title{
+      width: 100%;
+      padding-bottom: 5px;
+      font-size: 13px;
+      font-family: TradeGothics-Thin;
+      border-bottom: 0.5px dashed white;
+      color: #CCCCCC;
+    }
+    .nav-item{
+      font-family: TradeGothics-Bold;
+      color: white;
+      margin-top: 5px;
+      text-decoration: none;
+    }
+    .nav-item:hover{
+      cursor: pointer;
+      color: #87CFFB;
+      transition: 0.2s ease-in-out;
+    }
+    .nav-focus-container{
+      display: flex;
+      flex-direction: row;
+    }
+    .nav-focus{
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
+      height: 100%;
+      width: 400px;
+    }
+    .left-container{
+      position: fixed;
+      top: 110px;
+      left: 25px;
+      width: 24vw;
+    }
+    .main-explanation{
+      width: 100%;
+      height: 320px;
+      background-color: #292D31;
+      border: 1px dashed  #56585C;
+      border-radius: 10px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+      margin-bottom: 40px;
+      text-align: justify;
+
+    }
+    .gradient-bar-title{
+      font-family: TradeGothics-Bold;
+      color: #ffffff;
+    }
+    .gradient-bar{
+      width: 100%;
+      height: 20px;
+      background: linear-gradient(to right, #ff0000, #F9D6A5, #ffffff 30%, #ffffff 70%,#87CFFB, #4C9EED);
+      border-radius: 4px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
+    .right-container{
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      top: 90px;
+      right: 25px;
+      width: 24vw;
+      height: 400px;
+      background-color: #292D31;
+      border: 1px dashed  #56585C;
+      border-radius: 10px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+      padding-bottom: 10px;
+
+    }
+
+    .main-explanation-r{
+      margin-left: 5%;
+      margin-right: 5%;
+    }
+    .rightdownEqa{
+      position: fixed;
+      display: flex;
+      justify-content: center;
+      top: 520px;
+      right: 25px;
+      width: 24vw;
+      height: 240px;
+      background-color: #292D31;
+      border: 1px dashed  #56585C;
+      border-radius: 10px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+      padding-bottom: 30px;
+      padding-top: 10px;
+      opacity: 0;
+    }
+    .rightdownIn{
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+      color: white;
+      justify-content: center;
+      top: 520px;
+      right: 25px;
+      width: 24vw;
+      height: 240px;
+      background-color: #292D31;
+      border: 1px dashed  #56585C;
+      border-radius: 10px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+      padding-bottom: 30px;
+      padding-top: 10px;
+      opacity: 0;
+    }
+    .rightdownIndia{
+      position: fixed;
+      display: flex;
+      flex-direction: column;
+      color: white;
+      justify-content: center;
+      top: 520px;
+      right: 25px;
+      width: 24vw;
+      height: 240px;
+      background-color: #292D31;
+      border: 1px dashed  #56585C;
+      border-radius: 10px;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+      padding-bottom: 30px;
+      padding-top: 10px;
+      opacity: 0;
+    }
+    .rightdownIn.show{
+      opacity: 1;
+      transition: 0.2s ease-in-out;
+    }
+    .rightdownEqa.show{
+      opacity: 1;
+      transition: 0.2s ease-in-out;
+    }
+    .rightdownIndia.show{
+      opacity: 1;
+      transition: 0.2s ease-in-out;
+    }
+    .rightdownEqa,rightdownIn,rightdownIndia{
+      display: flex;
+     flex-direction: column;
+      font-family: TradeGothics-Regular;
+      color: white;
+    }
+    .animate__animated.animate__fadeIn{
+      --animate-duration: 3s;
+    }
+    .backbtn{
+      position: absolute;
+      z-index: 300000;
+      left: 60px;
+      top: 30px;
+      width: 40px;
+      height: 40px;
+      border-radius: 30px;
+      border: 1px solid #CCCCCC;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .backarrow{
+      position: absolute;
+      width: 30%;
+      height: 30%;
+      border-top: 2px solid #CCCCCC;
+      border-right: 2px solid #CCCCCC;
+      transform:rotate(-135deg);
+      left: 35%;
+    }
+    .specialpoints{
+      position:absolute;
+      top:0;
+      left:0;
+      width: 20px;
+      height: 20px;
+      border-radius: 20px;
+      border: 2px solid white;
+      background-color: #87CFFB
+    }
+    .specialpoints:hover{
+      cursor: pointer;
+     box-shadow:0px 0px 10px white;;
+
+      transition: 0.1s ease-in-out;
+    }
+
+
+
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.1/dist/echarts.min.js"></script>
+  <script type="module" crossorigin src="/SeeAcidSea/assets/third-dfab2c7d.js"></script>
+  <link rel="modulepreload" crossorigin href="/SeeAcidSea/assets/papaparse.min-af088632.js">
+  <link rel="stylesheet" href="/SeeAcidSea/assets/mainPage-6d606818.css">
+</head>
+<body>
+<canvas class="globe animate__animated animate__fadeIn" id="earth-container"></canvas>
+<div id="app"></div>
+<div class="backbtn">
+  <a href="index.html" class="backarrow"></a>
+</div>
+<nav class="nav-container">
+  <div class="nav-global" >
+    <div class="nav-title">OVERVIEW</div>
+    <a href="mainPage.html" class="nav-item">Global view</a>
+  </div>
+  <div class="nav-focus">
+    <div class="nav-title">FOCUS</div>
+    <div class="nav-focus-container">
+      <a href="LongitudeAnalysis.html" class="nav-item" style="margin-right: 70px;text-decoration: none">Location & Latitude</a>
+      <a href="Seasonal.html" class="nav-item" style="margin-right: 70px;text-decoration: none">Seasonal Pattern</a>
+    </div>
+  </div>
+</nav>
+<div class="left-container" id="left-container">
+  <div class="main-explanation animate__animated animate__fadeInDown">
+    <div style="width: 100%; height: 30px; background-color: #191A1D; border-radius: 10px 10px 0 0">
+      <div style="position: absolute;right: 20px;top:14px;height: 3px;width: 18px;background-color: #CCCCCC;border-radius: 3px" id="close-left"></div>
+    </div>
+    <h4 style="font-family: TradeGothics-Bold;color: white;margin-left: 20px;margin-right: 20px">About this globe</h4>
+    <p style="color: white;margin-left: 20px;margin-right: 20px;font-size: 1rem">This is a globe model illustrating ocean acidification.</p>
+    <p style="color: white;margin-left: 20px;margin-right: 20px">Different colors on the model represent varying levels of acidification at different locations, with areas having a pH value of less than 8 emphasized using rays.You can view the acidification data for various years by dragging the slider below.</p>
+    <p style="color: #AAAAAA;font-size: 12px;margin-left: 20px;margin-right: 20px">*The mainland has been sketched with an outline line, except where it is shaded as grey, which is missing data.</p>
+  </div>
+  <div class="animate__animated animate__fadeInDown">
+    <h4 class="gradient-bar-title ">pH color guide</h4>
+    <div class="gradient-bar"></div>
+    <div style="margin-top: 5px;width: 100%;height: 10px;display: flex;flex-direction: row">
+      <div style="width: 15%;border-left: 1px solid white;border-bottom:1px solid white "></div>
+      <div style="width: 15%;border-left: 1px solid white;border-bottom:1px solid white "></div>
+      <div style="width: 40%;border-left: 1px solid white;border-bottom:1px solid white "></div>
+      <div style="width: 15%;border-left: 1px solid white;border-bottom:1px solid white "></div>
+      <div style="width: 15%;border-left: 1px solid white;border-bottom:1px solid white;border-right: 1px solid white "></div>
+    </div>
+    <div style="margin-top: 5px;width: 100%;height: 10px;display: flex;flex-direction: row;font-size: 10px;color: white">
+      <div style="width: 15%;">&lt;8.03</div>
+      <div style="width: 15%;">8.03-8.06</div>
+      <div style="width: 40%;">8.06-8.14</div>
+      <div style="width: 15%;">8.14-8.17</div>
+      <div style="width: 15%;">&gt;8.17</div>
+    </div>
+  </div>
+</div>
+<div class="right-container animate__animated animate__fadeInDown" id="right-container">
+  <div style="position:absolute;top: 0;width: 100%; height: 30px; background-color: #191A1D; border-radius: 10px 10px 0 0;margin-bottom: 10px">
+    <div style="position: absolute;right: 20px;top:14px;height: 3px;width: 18px;background-color: #CCCCCC;border-radius: 3px" id="close-right"></div>
+  </div>
+  <div class="main-explanation-r" style="margin-top: 20px">
+    <div class="div1 yearDisplay" id="yearDisplay"></div>
+    <div class="div2">
+      <div class="explain2-title">CO2 emissions in this year</div>
+      <div ><span class="explain3-num" id="co2Display">32059873</span><span style="explain2-title"> kiloton</span></div>
+    </div>
+    <div class="div3">
+      <div class="explain3-title" >Percentage of ocean acidity anomalies<br>(pH&lt;8.0)</div>
+      <div class="explain3-num" id="pctDisplay">1.78%</div>
+    </div>
+    <div class="div4">
+      This year, the oceans absorbed approximately <span id="co2Ocean" style="color: #F2A45F">961.80</span>  of CO2, which is equivalent to the amount that about <span id="co2Tree" style="color: #F2A45F">43.72</span> million mature trees would absorb in one year.
+    </div>
+  </div>
+</div>
+
+<div class="rightdownEqa " id="rightdownEqa">
+  <h4 style="margin-left: 20px;font-family: TradeGothics-Bold">Equatorial Eastern Pacific</h4>
+  <p style="margin-left: 20px;margin-right: 20px;margin-top: -5px">The higher acidity in the east is primarily due to the ocean current patterns and sea surface temperature in the Pacific. The ocean current in the Eastern Pacific is an upwelling, which brings CO2 from the deep ocean to the surface, leading to an increased CO2 concentration in surface waters. Additionally, the cooler sea temperatures in the Eastern Pacific enhance the solubility of CO2, leading to an increase in acidity.</p>
+
+</div>
+<div class="rightdownIn " id="rightdownIn">
+  <h4 style="margin-left: 20px;font-family: TradeGothics-Bold">Black Sea</h4>
+  <p style="margin-left: 20px;margin-right: 20px;margin-top: -5px">Such high level of acidification of the Black sea upper layer is mostly due not to the rise of carbon dioxide concentration in the atmosphere, but to natural quasi-periodical decadal-scale intensification of upward motions in the subsurface layer of the Black sea transporting the water with low-pH to the surface.</p>
+</div>
+<div class="rightdownIn " id="rightdownIndia">
+  <h4 style="margin-left: 20px;font-family: TradeGothics-Bold">North Indian Ocean</h4>
+  <p style="margin-left: 20px;margin-right: 20px;margin-top: -5px">The topography of India rises to the north, so all the pollutants (e.g. fertilisers) from the Himalayan region and the Indo-Gangetic plains concentrate and mix with the sea water from the Indo-Gangetic plains, which ultimately flows into the sea.
+  </p>
+</div>
+
+<button class="reset-button" id="reset-button"></button>
+
+<div id="oceanCylinderEqaHTMLEqa" class="specialpoints"></div>
+<div id="oceanCylinderEqaHTMLIn" class="specialpoints"></div>
+<div id="oceanCylinderEqaHTMLIndia" class="specialpoints"></div>
+
+
+<h4 style="position: absolute;bottom: 30px;font-family: TradeGothics-Bold;font-size: 18px;left: 360px;color: white">Year Slider</h4>
+<div class="container" id="yearslider-container">
+  <div class="range-slider">
+    <input id="yearSlider" class="rs-range" type="range" min="2011" max="2020" value="2011">
+  </div>
+</div>
+
+<div id="open-left" style="position: absolute;top: 110px;width: 40px;height: 80px;border-radius: 0 10px 10px 0;border: 1px dashed  #56585C;display: flex;align-items: center;justify-content: center;background-color: #292D31">
+  <p style="transform: rotate(90deg);color: white;font-size: 18px;font-family: TradeGothics-Bold">About</p>
+</div>
+<div id="open-right" style="position: absolute;top: 110px;right:0;width: 40px;height: 80px;border-radius: 10px 0 0 10px;border: 1px dashed  #56585C;display: flex;align-items: center;justify-content: center;background-color: #292D31">
+  <p style="transform: rotate(-90deg);color: white;font-size: 18px;font-family: TradeGothics-Bold">Info</p>
+</div>
+
+<div  class="yearDisplay"></div>
+<div class="info-container" id="info-container">
+
+</div>
+<div id="tooltip" style="display: none; position: absolute; pointer-events: none;"></div>
+<div id="onscreen-tooltip" style="display: none; position: absolute; pointer-events: none;"></div>
+
+
+<script>
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <link rel="icon" type="image/svg+xml" href="/SeeAcidSea/vite.svg"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.0/chroma.min.js"></script>
+  <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
+  <title>SeeAcidSea</title>
+  <style>
+    @font-face {
+      font-family: Lato-Bold;
+      src: url("/SeeAcidSea/assets/Lato-Bold-bf1b8130.ttf");
+    }
+    @font-face {
+      font-family: Lato-Heavy;
+      src: url("/SeeAcidSea/assets/Lato-Heavy-4ce7ec20.ttf");
+    }
+    @font-face {
+      font-family: TradeGothics-Regular;
+      src: url("/SeeAcidSea/assets/Trade Gothic LT-75ced722.ttf");
+    }
+    @font-face {
+      font-family: TradeGothics-Bold;
+      src: url("/SeeAcidSea/assets/Trade Gothic LT Bold-d851713b.ttf");
+    }
+    @font-face {
+      font-family: TradeGothics-Thin;
+      src: url("/SeeAcidSea/assets/Trade Gothic LT Light-50271c32.ttf");
+    }
+    body{
+      font-family: TradeGothics-Regular;
+      background-color: #000000;
+      overflow: hidden;
+    }
+    #myCanvas{
+      padding: 0px;
+      position: fixed;
+      top: 80px;
+      left: -350px;
+    }
+
+    .globe {
+      /*cursor: pointer;*/
+    }
+
+    .reset-button {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    #yearSlider {
+      position: absolute;
+      width: 300px;
+      transform: translateX(-50%);
+    }
+
+    #yearDisplay {
+      position: fixed;
+      left: 100px;
+      bottom: 340px;
+      font-family: BelfastGrotesk-BoldOblique;
+      color: white;
+      font-size: 20px;
+    }
+
+    .container {
+      position: absolute;
+      top: 500px;
+      left: 22%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+
+
+    .rs-range {
+      width: 800px;
+      -webkit-appearance: none;
+    }
+
+    .rs-range:focus {
+      outline: none;
+    }
+
+    .rs-range::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 2px;
+      cursor: pointer;
+      box-shadow: none;
+      background: #ffffff;
+      border-radius: 0px;
+      border: 0px solid #010101;
+    }
+
+    .rs-range::-moz-range-track {
+      width: 100%;
+      height: 1px;
+      cursor: pointer;
+      box-shadow: none;
+      background: #ffffff;
+      border-radius: 0px;
+      border: 0px solid #010101;
+    }
+
+    .rs-range::-webkit-slider-thumb {
+      box-shadow: none;
+      border: 0px solid #ffffff;
+      box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.25);
+      height: 15px;
+      width: 15px;
+      border-radius: 25px;
+      background: white;
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -7.5px;
+    }
+
+
+    .nav-container{
+      position: fixed;
+      top: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: row;
+    }
+    .nav-global{
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
+      height: 100%;
+      width: 140px;
+      margin-right:80px ;
+    }
+    .nav-title{
+      width: 100%;
+      padding-bottom: 5px;
+      font-size: 13px;
+      font-family: TradeGothics-Thin;
+      border-bottom: 0.5px dashed white;
+      color: #CCCCCC;
+    }
+    .nav-item{
+      font-family: TradeGothics-Bold;
+      color: white;
+      margin-top: 5px;
+      text-decoration: none;
+    }
+    .nav-item:hover{
+      cursor: pointer;
+      color: #87CFFB;
+      transition: 0.2s ease-in-out;
+    }
+    .nav-focus-container{
+      display: flex;
+      flex-direction: row;
+    }
+    .nav-focus{
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
+      height: 100%;
+      width: 400px;
+    }
+    .axis line{
+      stroke: #dfdfdf;
+      stroke-width: 0.5;
+      shape-rendering: crispEdges;
+    }
+
+
+    /* axis contour */
+    .axis g {
+      stroke: #dfdfdf;
+      stroke-width: 0.7;
+      shape-rendering: crispEdges;
+    }
+
+    /* axis text */
+    .axis text {
+      fill: #ffffff;
+      font-family: Georgia;
+      font-size: 100%;
+    }
+    .chart-title{
+      font-family: TradeGothics-Bold;
+      margin: 10px;
+      color: white;
+
+      font-family: TradeGothics-Bold;
+    }
+    #linechart {
+      width: 105%;
+      height: 100%;
+    }
+
+    .btn-container{
+      position: absolute;
+      left: 50px;
+      top: 90px;
+      font-size: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+    .read-btn{
+      margin-right: 20px;
+      color: white;
+      cursor: pointer;
+      width: 80px;
+      height: 28px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid white;
+      font-size: 12px;
+      margin-bottom: 15px;
+    }
+    .read-btn:hover{
+      cursor: pointer;
+      background-color: white;
+      border-radius: 5px;
+      color: black;
+      transition: 0.2s ease-in-out;
+    }
+
+    .reason-btn{
+      margin-bottom: 20px;
+      color: white;
+      cursor: pointer;
+      width: 110px;
+      height: 28px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid white;
+      font-size: 12px;
+    }
+    .reason-btn:hover{
+      margin-bottom: 5px;
+      cursor: pointer;
+      background-color: white;
+      border-radius: 5px;
+      color: black;
+
+      transition: 0.2s ease-in-out;
+    }
+    /* AXES */
+    /* ticks */
+    .axis line{
+      stroke: #dfdfdf;
+      stroke-width: 0.5;
+      shape-rendering: crispEdges;
+    }
+
+
+    /* axis contour */
+    .axis path {
+      stroke: #dfdfdf;
+      stroke-width: 0.7;
+      shape-rendering: crispEdges;
+    }
+
+    /* axis text */
+    .axis text {
+      fill: #ffffff;
+      font-family: Georgia;
+      font-size: 100%;
+    }
+
+    /* LINE CHART */
+    path.line-0 {
+      fill: none;
+      stroke: #848383;
+    }
+
+    path.line-1 {
+      fill: none;
+      stroke: #848383;
+      stroke-width: 1;
+    }
+
+    path.line-2 {
+      fill: none;
+      stroke: #848383;
+      stroke-width: 1;
+    }
+
+    path.line-3 {
+      fill: none;
+      stroke: #848383;
+      stroke-width: 1;
+    }
+
+    path.line-4 {
+      fill: none;
+      stroke: #848383;
+      stroke-width: 1;
+    }
+
+    path.line-5 {
+      fill: none;
+      stroke: #848383;
+      stroke-width: 1;
+    }
+
+    path.line-6 {
+      fill: none;
+      stroke: #848383;
+      stroke-width: 1;
+    }
+
+    path.line-7 {
+      fill: none;
+      stroke: #FF5252;
+      stroke-width: 2;
+    }
+
+    path.line-8 {
+      fill: none;
+      stroke: #FF5252;
+      stroke-width: 2;
+    }
+
+    path.line-9 {
+      fill: none;
+      stroke: #FF5252;
+      stroke-width: 2;
+    }
+
+    /*average*/
+    path.line-10 {
+      fill: none;
+      stroke: #4C9EED;
+      stroke-dasharray: 2;
+    }
+
+
+    .serie_label {
+      fill: #2b2929;
+      font-family: Georgia;
+      font-size: 80%;
+    }
+    /* TOOLTIP */
+    .tooltip {
+      fill: #9c9c9c;
+      font-family: Georgia;
+      font-size: 150%;
+    }
+    /* POINTS */
+    .point {
+      stroke: none;
+      fill: #9c9c9c;
+    }
+
+    @font-face {
+      font-family: Lato-Bold;
+      src: url("/SeeAcidSea/assets/Lato-Bold-bf1b8130.ttf");
+    }
+    @font-face {
+      font-family: Lato-Heavy;
+      src: url("/SeeAcidSea/assets/Lato-Heavy-4ce7ec20.ttf");
+    }
+    @font-face {
+      font-family: TradeGothics-Regular;
+      src: url("/SeeAcidSea/assets/Trade Gothic LT-75ced722.ttf");
+    }
+    @font-face {
+      font-family: TradeGothics-Bold;
+      src: url("/SeeAcidSea/assets/Trade Gothic LT Bold-d851713b.ttf");
+    }
+    @font-face {
+      font-family: TradeGothics-Thin;
+      src: url("/SeeAcidSea/assets/Trade Gothic LT Light-50271c32.ttf");
+    }
+    body{
+      font-family: TradeGothics-Regular;
+      background-color: #000000;
+      overflow: hidden;
+    }
+    .svg-container{
+      position: absolute;
+      right: 0;
+    }
+
+
+    .nav-container{
+      position: fixed;
+      top: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: row;
+      z-index: 5000;
+    }
+    .nav-global{
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
+      height: 100%;
+      width: 140px;
+      margin-right:80px ;
+    }
+    .nav-title{
+      width: 100%;
+      padding-bottom: 5px;
+      font-size: 13px;
+      font-family: TradeGothics-Thin;
+      border-bottom: 0.5px dashed white;
+      color: #CCCCCC;
+    }
+    .nav-item{
+      font-family: TradeGothics-Bold;
+      color: white;
+      margin-top: 5px;
+      text-decoration: none;
+    }
+    .nav-item:hover{
+      cursor: pointer;
+      color: #87CFFB;
+      transition: 0.2s ease-in-out;
+    }
+    .nav-focus-container{
+      display: flex;
+      flex-direction: row;
+    }
+    .nav-focus{
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
+      height: 100%;
+      width: 400px;
+    }
+    .explain-1{
+      position: fixed;
+      right: 500px;
+      top: 500px;
+      width: 160px;
+      height: 100px;
+      color: white;
+      word-wrap: break-word;
+      font-family: TradeGothics-Regular;
+      font-size: 14px;
+    }
+    .explain-2{
+      position: fixed;
+      right: 550px;
+      top: 380px;
+      width: 160px;
+      height: 100px;
+      color: white;
+      word-wrap: break-word;
+      font-family: TradeGothics-Regular;
+      font-size: 14px;
+    }
+
+    .explain-3{
+      position: fixed;
+      right: 390px;
+      top: 550px;
+      width: 160px;
+      height: 100px;
+      color: #FF5252;
+      word-wrap: break-word;
+      font-family: TradeGothics-Bold;
+      font-size: 14px;
+    }
+    .explain-4{
+      position: fixed;
+      right: 400px;
+      top: 390px;
+      width: 160px;
+      height: 100px;
+      color: #4C9EED;
+      word-wrap: break-word;
+      font-family: TradeGothics-Regular;
+      font-size: 14px;
+    }
+    .explain-5{
+      position: fixed;
+      top: 420px;
+      right: 200px;
+      width: 220px;
+      height: 100px;
+      color: white;
+      word-wrap: break-word;
+      font-family: TradeGothics-Regular;
+      font-size: 14px;
+    }
+    .explain-6{
+      position: fixed;
+      right: 30px;
+      top: 580px;
+      width: 220px;
+      height: 100px;
+      color: white;
+      word-wrap: break-word;
+      font-family: TradeGothics-Regular;
+      font-size: 14px;
+    }
+    .selected{
+      background-color: white;
+    }
+    .btn-container{
+      font-size: 16px;
+      display: flex;
+      flex-direction: row;
+    }
+    .read-btn{
+      margin-right: 20px;
+      color: white;
+      cursor: pointer;
+      width: 120px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid white;
+      border-radius: 5px;
+    }
+    .read-btn:hover{
+      margin-bottom: 20px;
+      cursor: pointer;
+      background-color: white;
+      border-radius: 5px;
+      color: black;
+
+      transition: 0.2s ease-in-out;
+    }
+
+    .reason-btn{
+      margin-bottom: 20px;
+      color: white;
+      cursor: pointer;
+      width: 150px;
+      height: 35px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid white;
+    }
+    .reason-btn:hover{
+      margin-bottom: 5px;
+      cursor: pointer;
+      background-color: white;
+      border-radius: 5px;
+      color: black;
+
+      transition: 0.2s ease-in-out;
+    }
+
+    .explanation-container{
+      opacity: 1;
+    }
+    /*.explanation-container.show{*/
+    /*  opacity: 1;*/
+    /*  transition: 0.2s ease-in-out;*/
+    /*}*/
+    /*.explanation-container.hide{*/
+    /*  opacity: 0;*/
+    /*  transition: 0.2s ease-in-out;*/
+    /*}*/
+
+    .reason-container{
+      opacity: 0;
+    }
+    .reason-container.show{
+      opacity: 1;
+      transition: 0.4s ease-in-out;
+    }
+    .reason-container.hide{
+      opacity: 0;
+      transition: 0.4s ease-in-out;
+    }
+
+    .circle1{
+      position: fixed;
+      z-index: 0;
+      left: 360px;
+      top: 320px;
+      width: 200px;
+      height: 200px;
+      border-radius: 150px;
+      border: 1px dashed  #DFDFDF;
+    }
+    .circle2{
+      position: fixed;
+      z-index: 1;
+      left: 800px;
+      top: 470px;
+      width: 200px;
+      height: 200px;
+      border-radius: 150px;
+      border: 1px dashed  #DFDFDF;
+    }
+    .reason-1{
+      position: fixed;
+      top: 480px;
+      left: 170px;
+      width: 220px;
+      height: 100px;
+      background-color: #292D31;
+      color: rgba(255, 255, 255, 0.98);
+      border: 1px dashed  #56585C;
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .reason-2{
+      position: fixed;
+      top: 500px;
+      left: 418px;
+      width: 200px;
+      height: 240px;
+      background-color: #292D31;
+      border: 1px dashed  #56585C;
+      color: rgba(255, 255, 255, 0.98);
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .r1-container{
+      display: flex;
+      word-wrap: normal;
+      word-break: normal;
+    }
+
+    .r2-container{
+      margin: 5px;
+      display: flex;
+      word-wrap: normal;
+      word-break: normal;
+    }
+    .reason-3{
+      position: fixed;
+      top: 300px;
+      left: 660px;
+      width: 340px;
+      height: 140px;
+      background-color: #292D31;
+      color: rgba(255, 255, 255, 0.98);
+      border: 1px dashed  #56585C;
+      border-radius: 10px;
+      padding: 10px;
+    }
+    .reason-4{
+      position: fixed;
+      top: 580px;
+      left: 1100px;
+      width: 240px;
+      height: 170px;
+      background-color: #292D31;
+      border: 1px dashed  #56585C;
+      color: rgba(255, 255, 255, 0.98);
+      border-radius: 10px;
+      padding: 10px;
+    }
+    .intro-container{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+    }
+    .left-container{
+      position: absolute;
+      top: 150px;
+      height: 140px;
+      right: 60px;
+      width: 48vw;
+      z-index: 2000;
+      border: 1px dashed  #56585C;
+      border-radius: 10px;
+      background-color: #292D31;
+      padding: 10px 15px 10px 20px;
+    }
+    .intro-text{
+      margin-bottom: 30px;
+      color: white;
+    }
+    .map-container{
+      width: 37%;
+      margin-left: 40px;
+      height: 100%;
+      border: 1px dashed  #56585C;
+      border-radius: 10px;
+      background-color: #292D31;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+    }
+    #line-container {
+      position: absolute;
+      top: 350px;
+      right: 10px;
+      width: 55vw;
+      height: 40vh;
+      overflow: visible; /* 确保SVG的任何超出容器的内容都可见 */
+      z-index: 6000;
+    }
+
+    .svg-content {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible; /* 确保SVG内容超出其尺寸时仍然可见 */
+    }
+    .backbtn{
+      position: absolute;
+      z-index: 300000;
+      right: 30px;
+      top: 50vh;
+      width: 40px;
+      height: 40px;
+      border-radius: 30px;
+      border: 1px solid #CCCCCC;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .backarrow{
+      position: absolute;
+      width: 30%;
+      height: 30%;
+      border-top: 2px solid #CCCCCC;
+      border-right: 2px solid #CCCCCC;
+      transform:rotate(45deg);
+      left: 25%;
+    }
+
+
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.1/dist/echarts.min.js"></script>
+  <script type="module" crossorigin src="/SeeAcidSea/assets/another-bd1f3e9d.js"></script>
+  <link rel="modulepreload" crossorigin href="/SeeAcidSea/assets/papaparse.min-af088632.js">
+</head>
+<body>
+<div class="globe" id="myCanvas"></div>
+<div id="app"></div>
+
+<nav class="nav-container" style="background-color: black">
+  <div class="nav-global" >
+    <div class="nav-title">OVERVIEW</div>
+    <a href="mainPage.html" class="nav-item">Global view</a>
+  </div>
+  <div class="nav-focus">
+    <div class="nav-title">FOCUS</div>
+    <div class="nav-focus-container">
+      <a href="LongitudeAnalysis.html" class="nav-item" style="margin-right: 70px;text-decoration: none">Location & Latitude</a>
+      <a href="" class="nav-item" style="margin-right: 70px;text-decoration: none">Seasonal Pattern</a>
+    </div>
+  </div>
+</nav>
+
+
+<div class="container" id="yearslider-container" style="opacity: 0">
+  <div class="range-slider">
+    <input id="yearSlider" class="rs-range" type="range" min="1" max="12" value="1">
+  </div>
+</div>
+
+
+<div id="yearDisplay" class="yearDisplay" style="opacity: 0"></div>
+
+<div id="explanation-part">
+<div id="line-container" class="svg-container"></div>
+<div id="explanation-container" class="explanation-container">
+  <img src="/SeeAcidSea/assets/layer_1-15c59b06.svg" style="position: absolute;right: 250px;top: 390px;width: 510px;height: 270px;z-index: 0">
+  <div class="explain-1">pH values usually reach an annual maximum around April</div>
+  <div class="explain-2">Year 2011</div>
+  <div class="explain-3">pH values for 2018 to 2020 is shown with green lines</div>
+  <div class="explain-4">The average pH in 10 years</div>
+  <div class="explain-5">pH values usually shrink to their minimum in August</div>
+  <div class="explain-6">pH value of August 2020 reached the lowest point on record</div>
+</div>
+<div class="reason-container" id="reason-container">
+  <div class="circle1"></div>
+  <div class="circle2"></div>
+  <div class="reason-1">
+    <div class="r1-container">
+      <div class="r1-text">The first thing we need to know is that seasonal changes in PH may be related to a variety of natural processes.</div>
+      <img class="r1-pic">
+    </div>
+  </div>
+  <div class="reason-2">
+    <div class="r2-container">
+      <div class="r2-text">During the spring (March-April), many marine organisms (e.g. phytoplankton) experience a reproductive peak. These organisms absorb carbon dioxide through photosynthesis, which reduces the concentration of carbon dioxide in seawater and leads to a rise in pH.</div>
+      <img class="r2-pic">
+    </div>
+  </div>
+  <div class="reason-3">
+    <div class="r3-container">
+      <div class="r3-text">A large number of algae constantly produce CO2 through respiration, while the temperature increases in summer, the chemical reaction rate is accelerated, resulting in a decrease of pH</div>
+      <img class="r3-pic">
+    </div>
+  </div>
+  <!--  <div class="reason-4">-->
+  <!--    <div class="r4-container">-->
+  <!--      <div class="r4-text">During the spring (March-April), many marine organisms (e.g. phytoplankton) experience a reproductive peak. These organisms absorb carbon dioxide through photosynthesis, which reduces the concentration of carbon dioxide in seawater and leads to a rise in pH.</div>-->
+  <!--      <img class="r4-pic">-->
+  <!--    </div>-->
+  <!--  </div>-->
+</div>
+
+<div class="intro-container">
+  <div class="left-container">
+    <div class="intro-text">This is a line graph of seasonal changes in pH for the mid-latitudes of the North Pacific Ocean (20-50°N,as shown in the figure on the right) for each year from 2011 to 2020, from which we are able to see the difference in the acidity of seawater between seasons.</div>
+    <div class="btn-container">
+<!--      <div class="read-btn" id="read-btn">Instructions</div>-->
+      <div class="reason-btn" id="reason-btn">About the reason</div>
+    </div>
+  </div>
+
+</div>
+</div>
+<style>
+  .reason-right-container{
+    position: absolute;
+    width: 65vw;
+    right: 0;
+    height: 100vh;
+    overflow-y: scroll;
+    z-index: 4000;
+
+  }
+  .each-month{
+    width: 60%;
+    margin-left: 30%;
+    height: 250px;
+    /*background-color: #292D31;*/
+    border-bottom: 1px dashed  #56585C;
+    border-right: 1px dashed  #56585C;
+    border-left: 1px dashed  #56585C;;
+  }
+  .reason-right-container::-webkit-scrollbar {
+    width: 5px;
+    height: 8px;
+    background-color: #191A1D; /* or add it to the track */
+  }
+
+  /* Add a thumb */
+  .reason-right-container::-webkit-scrollbar-thumb {
+    background: #191A1D;
+  }
+  .month-title{
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    height: 50px;
+    align-items: center;
+    margin-left: -12.5px;
+    padding-top: 15px;
+  }
+  .title-before{
+    width: 25px;
+    height: 25px;
+    background-color:#87CFFB ;
+    border-radius: 30px;
+  }
+  .month-title-sub{
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+    height: 50px;
+    align-items: center;
+    margin-left: -10px;
+    padding-top: 15px;
+  }
+  .title-before-sub{
+    width: 20px;
+    height: 20px;
+    background-color: #9f9c9c;
+    border-radius: 30px;
+  }
+  .real-title{
+    margin-left: 15px;
+    font-family: TradeGothics-Bold;
+    color: white;
+    font-size: 35px;
+  }
+  .season-name{
+    margin-left: 27.5px;
+    font-size: 25px;
+    color: #CCCCCC;
+    margin-bottom: 25px;
+  }
+  .month-text{
+    margin-left: 27.5px;
+    margin-right: 27.5px;
+    color: white;
+    font-size: 16px;
+  }
+</style>
+<div class="reason-right-container" id="reason-right-container">
+  <div class="each-month"></div>
+  <div class="each-month" style="height: 300px">
+    <div class="month-title">
+      <div class="title-before"></div>
+      <div class="real-title">January 2020</div>
+    </div>
+    <div class="season-name">Winter</div>
+    <div class="month-text">The first thing we need to know is that seasonal changes in PH may be related to a variety of natural processes.</div>
+    <div class="month-text" style="margin-top: 10px">We focus on two main aspects of the sea's movement patterns and biological activity.
+      The cold surface water may have some mixing with the deeper water, resulting in a slight reduction of CO2 in the surface layer. The pH is relatively stable due to low biological activity.</div>
+  </div>
+  <div class="each-month" style="height: 80px">
+    <div class="month-title-sub">
+      <div class="title-before-sub"></div>
+      <div class="real-title" style="font-size: 25px">February</div>
+    </div>
+  </div>
+  <div class="each-month" style="height: 240px">
+    <div class="month-title">
+      <div class="title-before"></div>
+      <div class="real-title">March 2020</div>
+    </div>
+    <div class="season-name">Winter</div>
+    <div class="month-text">Increased sunshine hours and intensity of solar radiation start the bloom of primary producers (e.g. phytoplankton), which consume carbon dioxide in the surface layer, leading to a slight decrease in acidity.</div>
+  </div>
+  <div class="each-month" style="height: 200px">
+    <div class="month-title">
+      <div class="title-before"></div>
+      <div class="real-title">April 2020</div>
+    </div>
+    <div class="season-name">Spring</div>
+    <div class="month-text">Phytoplankton blooms peak and further consume CO2, possibly leading to a slight increase in surface water pH.</div>
+  </div>
+  <div class="each-month" style="height: 80px;border-bottom: 0">
+    <div class="month-title-sub">
+      <div class="title-before-sub"></div>
+      <div class="real-title" style="font-size: 25px">May</div>
+    </div>
+  </div>
+  <div class="each-month" style="height: 80px">
+    <div class="month-title-sub">
+      <div class="title-before-sub"></div>
+      <div class="real-title" style="font-size: 25px">June</div>
+    </div>
+  </div>
+  <div class="each-month" style="height: 220px">
+    <div class="month-title">
+      <div class="title-before"></div>
+      <div class="real-title">July 2020</div>
+    </div>
+    <div class="season-name">Summer</div>
+    <div class="month-text">Biological activity is high and carbon dioxide may begin to accumulate due to the decomposition of zooplankton and other organic matter, leading to increased acidity</div>
+  </div>
+  <div class="each-month" style="height: 220px">
+    <div class="month-title">
+      <div class="title-before"></div>
+      <div class="real-title">August 2020</div>
+    </div>
+    <div class="season-name">Summer</div>
+    <div class="month-text">Water temperatures may be at their highest. As a result of ocean currents, the bottom water carries carbon dioxide upwards, leading to a build-up of carbon dioxide in the surface layer, which may lead to the highest acidity.</div>
+  </div>
+  <div class="each-month" style="height: 80px;border-bottom: 0">
+    <div class="month-title-sub">
+      <div class="title-before-sub"></div>
+      <div class="real-title" style="font-size: 25px">September</div>
+    </div>
+  </div>
+  <div class="each-month" style="height: 80px">
+    <div class="month-title-sub">
+      <div class="title-before-sub"></div>
+      <div class="real-title" style="font-size: 25px">October</div>
+    </div>
+  </div>
+  <div class="each-month" style="height: 220px">
+    <div class="month-title">
+      <div class="title-before"></div>
+      <div class="real-title">November 2020</div>
+    </div>
+    <div class="season-name">Winter</div>
+    <div class="month-text">With the onset of winter, when daylight hours are at their shortest and biological activity is at its lowest, the mixing of surface and deep water may result in acidity reaching its winter minimum.</div>
+  </div>
+  <div class="each-month" style="height: 80px;border-bottom: 0">
+    <div class="month-title-sub">
+      <div class="title-before-sub"></div>
+      <div class="real-title" style="font-size: 25px">December</div>
+    </div>
+  </div>
+  <div class="backbtn" id="hide-calender">
+    <a class="backarrow"></a>
+  </div>
+  <div class="each-month" style="height: 420px;border-bottom: 1px dashed #56585C"></div>
+
+</div>
+
+
+<script>
+
+
+
+
+
+
+  //------------------------1. PREPARATION------------------------//
+  //-----------------------------SVG------------------------------//
+  const width = 730;
+  const height = 280;
+  const adj = 30; // 将偏移量减小，以便更好地容纳内容
+
+  const svg = d3.select("div#line-container").append("svg")
+          .attr("preserveAspectRatio", "xMinYMin meet")
+          .attr("viewBox", "-" + adj + " -" + adj + " " + (width + adj * 2) + " " + (height + adj * 2))
+          .classed("svg-content", true);
+
+
+  //-----------------------------DATA-----------------------------//
+  const dataset = d3.csv("./dataset/seasonal_data_north_with_average.csv");
+  dataset.then(function(data) {
+    var slices = data.columns.slice(1).map(function(id) {
+      return {
+        id: id,
+        values: data.map(function(d){
+          return {
+            date: +d.date, // Parse the date as a number
+            measurement: +d[id]
+          };
+        })
+      };
+    });
+
+//----------------------------SCALES----------------------------//
+    const xScale = d3.scaleLinear().domain([1, 12]).range([0, width]); // Scale for months
+    const yScale = d3.scaleLinear().rangeRound([height, 0]);
+
+
+    yScale.domain([8.01,8.11]);
+
+//-----------------------------AXES-----------------------------//
+    const yaxis = d3.axisLeft().ticks((slices[0].values).length).scale(yScale);
+
+
+
+    // const xaxis = d3.axisBottom(xScale);
+
+    const xaxis = d3.axisBottom()
+            .ticks(12)
+            .tickFormat(d => d )
+            .scale(xScale);
+
+//----------------------------LINES-----------------------------//
+    const line = d3.line()
+            .x(function(d) { return xScale(d.date); })
+            .y(function(d) { return yScale(d.measurement); });
+
+    let id = 0;
+    const ids = function () {
+      return "line-"+id++;
+    }
+
+//---------------------------TOOLTIP----------------------------//
+    const tooltip = d3.select("body").append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0)
+            .style("position", "absolute");
+
+//-------------------------2. DRAWING---------------------------//
+//-----------------------------AXES-----------------------------//
+    svg.append("g")
+            .attr("class", "axis")
+            .attr("transform", "translate(0," + height + ")")
+            .call(xaxis);
+
+    svg.append("g")
+            .attr("class", "axis")
+            .call(yaxis)
+            .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("dy", ".75em")
+            .attr("y", 6)
+            .style("text-anchor", "end")
+            .text("pH Value");
+
+//----------------------------LINES-----------------------------//
+    const lines = svg.selectAll("lines")
+            .data(slices)
+            .enter()
+            .append("g");
+
+    lines.append("path")
+            .attr("class", ids)
+            .attr("d", function(d) { return line(d.values); });
+
+    // lines.append("text")
+    //         .attr("class","serie_label")
+    //         .datum(function(d) {
+    //           return {
+    //             id: d.id,
+    //             value: d.values[d.values.length - 1]}; })
+    //         .attr("transform", function(d) {
+    //           return "translate(" + (xScale(d.value.date) + 10)
+    //                   + "," + (yScale(d.value.measurement) + 5 )+ ")"; })
+    //         .attr("x", 5)
+    //         .text(function(d) { return d.id; });
+
+//---------------------------POINTS-----------------------------//
+    lines.selectAll("points")
+            .data(function(d) {return d.values})
+            .enter()
+            .append("circle")
+            .attr("cx", function(d) { return xScale(d.date); })
+            .attr("cy", function(d) { return yScale(d.measurement); })
+            .attr("r", 1)
+            .attr("class","point")
+            .style("opacity", 1);
+//---------------------------EVENTS-----------------------------//
+    lines.selectAll("circles")
+            .data(function(d) { return(d.values); } )
+            .enter()
+            .append("circle")
+            .attr("cx", function(d) { return xScale(d.date); })
+            .attr("cy", function(d) { return yScale(d.measurement); })
+            .attr('r', 10)
+            .style("opacity", 0)
+            .on('mouseover', function(d) {
+              tooltip.transition()
+                      .delay(30)
+                      .duration(200)
+                      .style("opacity", 1);
+
+              tooltip.html(d.measurement)
+                      .style("left", (d3.event.pageX + 25) + "px")
+                      .style("top", (d3.event.pageY) + "px")
+                      .style("color","#ffffff")
+                      .style("z-index","1001");
+
+              //add this
+              const selection = d3.select(this).raise();
+
+              selection
+                      .transition()
+                      .delay("20")
+                      .duration("200")
+                      .attr("r", 6)
+                      .style("opacity", 1)
+                      .style("fill","#ed3700");
+            })
+
+            .on("mouseout", function(d) {
+              tooltip.transition()
+                      .duration(100)
+                      .style("opacity", 0);
+
+              //add this
+              const selection = d3.select(this);
+
+              selection
+                      .transition()
+                      .delay("20")
+                      .duration("200")
+                      .attr("r", 10)
+                      .style("opacity", 0);
+            });
+  });
+
+  // const eplTrigger = document.getElementById('read-btn');
+  const eplContainer = document.getElementById('explanation-container');
+  const rsTrigger = document.getElementById('reason-btn');
+  const rsContainer = document.getElementById('reason-right-container');
+  const backBtn = document.getElementById('hide-calender');
+  const ePart = document.getElementById('explanation-part');
+
+  // 初始化状态
+  // eplContainer.style.display = "none";
+  ePart.style.display = "block";
+  rsContainer.style.display = "none";
+
+  function resetAnimation(element) {
+    element.classList.remove('animate__animated', 'animate__slideInRight', 'animate__slideOutRight');
+    void element.offsetWidth;
+    element.classList.add('animate__animated');
+  }
+
+  function animateSlideIn(element) {
+    resetAnimation(element);
+    element.classList.add('animate__slideInRight');
+  }
+
+  function animateSlideOut(element) {
+    resetAnimation(element);
+    element.classList.add('animate__slideOutRight');
+  }
+
+  rsTrigger.addEventListener('click', function() {
+    animateSlideOut(ePart);
+    ePart.addEventListener('animationend', function() {
+      ePart.style.display = "none";
+      animateSlideIn(rsContainer);
+      rsContainer.style.display = "block";
+    }, { once: true });
+  });
+
+  backBtn.addEventListener('click', function() {
+    animateSlideOut(rsContainer);
+    rsContainer.addEventListener('animationend', function() {
+      rsContainer.style.display = "none";
+      animateSlideIn(ePart);
+      ePart.style.display = "block";
+    }, { once: true });
+  });
+
+
+
+
+</script>
+
+</body>
+</html>
